@@ -7,7 +7,7 @@
         <div v-for="index in 9" class="w-100 m-2 border border-1 rounded shadow">
           <h3>{{ index }} 位</h3>
           <div v-if="(teams[index-1] ?? false)">
-            <div class="d-flex flex-row justify-content-center"><h5 class="flex-grow-1 text-end">{{ teams[index - 1].data().roomId ?? UNKNOWN }}</h5><h5 class="px-2">|</h5><h5 class="flex-grow-1 text-start">score: {{ teams[index - 1].data().score ?? 0 }}</h5></div>
+            <div class="d-flex flex-row justify-content-center"><h5 class="flex-grow-1 flex-basis-0 text-end">{{ teams[index - 1].data().roomId ?? UNKNOWN }}</h5><h5 class="px-2">|</h5><h5 class="flex-grow-1 flex-basis-0 text-start">score: {{ teams[index - 1].data().score ?? 0 }}</h5></div>
           </div>
         </div>
       </div>
@@ -69,4 +69,7 @@ export default {
 
 
 <style scoped>
+.flex-basis-0{
+  flex-basis: 0;
+}
 </style>
