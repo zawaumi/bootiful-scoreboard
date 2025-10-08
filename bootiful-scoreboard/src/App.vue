@@ -4,9 +4,9 @@
       <h1 class="col-md-12 text-center">ランキング</h1>
       <!--1~9位まで-->
       <div class="d-flex flex-column align-items-center col-6 p-5">
-        <div v-for="index in 9" class="w-100 m-2 border border-1 rounded shadow">
-          <h3>{{ index }} 位</h3>
-          <div v-if="(teams[index-1] ?? false)">
+        <div v-for="index in 9">
+          <div v-if="(teams[index-1] ?? false)" class="w-100 m-2 border border-1 rounded shadow">
+            <h3>{{ index }} 位</h3>
             <div class="d-flex flex-row justify-content-center"><h5 class="flex-grow-1 flex-basis-0 text-end">{{ teams[index - 1].data().roomId ?? UNKNOWN }}</h5><h5 class="px-2">|</h5><h5 class="flex-grow-1 flex-basis-0 text-start">score: {{ teams[index - 1].data().score ?? 0 }}</h5></div>
           </div>
         </div>
@@ -25,7 +25,6 @@
 <script>
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { collection, getFirestore, onSnapshot } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -43,9 +42,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-const db = getFirestore(app);
 
-const db_scores = collection(db, "scores");
+const GET_RANKINGS_URL = 'https://us-central1-c4sbootiful.cloudfunctions.net/getGroupRanking';//'https://getgroupranking-vnjimsks5q-uc.a.run.app';
 
 export default {
   data() {
@@ -54,13 +52,36 @@ export default {
     }
   },
   created() {
-      const unh = onSnapshot(db_scores, (snapshot) => {
-        this.teams = this.sort_teams(snapshot.docs);
-      });
+      this.callGetGroupRanking();
   },
   methods: {
     sort_teams(score){
       return score;
+    },
+    async callGetGroupRanking(){
+      const payload = {
+        number: 10
+      };
+
+      try {
+        const response = await fetch(GET_RANKINGS_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          throw new Error('HTTPerror: ${response.status}');
+        }
+
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        this.teams = [];
+        console.error('error with getting ranking from firebase: ',error);
+      }
     }
   },
 }
