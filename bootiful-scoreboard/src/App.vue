@@ -1,22 +1,24 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <div class="w-100 row m-0">
       <h1 class="col-md-12 text-center">ランキング</h1>
-      <!--1~9位まで-->
+      <!--最新の記録-->
       <div class="d-flex flex-column align-items-center col-6 p-5">
-        <div v-for="index in 9">
-          <div v-if="(teams[index-1] ?? false)" class="w-100 m-2 border border-1 rounded shadow">
-            <h3>{{ index }} 位</h3>
-            <div class="d-flex flex-row justify-content-center"><h5 class="flex-grow-1 flex-basis-0 text-end">{{ teams[index - 1].data().roomId ?? UNKNOWN }}</h5><h5 class="px-2">|</h5><h5 class="flex-grow-1 flex-basis-0 text-start">score: {{ teams[index - 1].data().score ?? 0 }}</h5></div>
+        <div v-if="(latestScore ?? false)" class="w-100 px-3">
+          <div v-for="record in latestScore" class="w-100 my-4 border border-1 rounded shadow">
+            <h3>{{ record.rank ?? "error" }} 位</h3>
+            <div class="d-flex flex-row justify-content-center"><h5 class="flex-grow-1 flex-basis-0 text-end">{{ record.name ?? "UNKNOWN" }}</h5><h5 class="px-2">|</h5><h5 class="flex-grow-1 flex-basis-0 text-start">score: {{ record.score ?? 0 }}</h5></div>
           </div>
         </div>
       </div>
-      <!--10位以降-->
+      <!--1~9位まで-->
       <div class="d-flex flex-column align-items-center col-6 p-5">
-        <div v-for="(team, index) in teams">
-          <div v-if="9 <= index">
-            {{ index + 1 }} 位{{ team.data().roomId }}score: {{ team.data().score }}</div>
+        <div v-if="(ranking ?? false)" class="w-100 px-3">
+          <div v-for="record in ranking" class="w-100 my-4 border border-1 rounded shadow">
+            <h3>{{ record.rank ?? "error" }} 位</h3>
+            <div class="d-flex flex-row justify-content-center"><h5 class="flex-grow-1 flex-basis-0 text-end">{{ record.name ?? "UNKNOWN" }}</h5><h5 class="px-2">|</h5><h5 class="flex-grow-1 flex-basis-0 text-start">score: {{ record.score ?? 0 }}</h5></div>
           </div>
+        </div>
       </div>
     </div>
   </div>
@@ -48,7 +50,8 @@ const GET_RANKINGS_URL = 'https://us-central1-c4sbootiful.cloudfunctions.net/get
 export default {
   data() {
     return {
-      teams: []
+      ranking: [],
+      latestScore: []
     }
   },
   created() {
@@ -78,6 +81,9 @@ export default {
 
         const data = await response.json();
         console.log(data);
+        this.ranking = data.ranking;
+        this.latestScore.unshift(data.latest);
+        this.latestScore = this.latestScore.slice(0, 3);
       } catch (error) {
         this.teams = [];
         console.error('error with getting ranking from firebase: ',error);
