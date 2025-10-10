@@ -60,7 +60,7 @@ export default {
     return {
       ranking: [],
       latestScore: [],
-      unsubscribeDB: {},
+      unsubscribeDB: {}
     }
   },
   created() {
@@ -72,6 +72,21 @@ export default {
 
       this.setRanking(to_sort);
     });
+
+    document.addEventListener('keyup', (event) => {
+      const target_div = document.getElementById("app");
+      if(event.key == 'f' && !document.fullscreenElement) {
+        if (target_div.requestFullscreen) {
+          target_div.requestFullscreen();
+        } else if (target_div.mozRequestFullScreen) { // Firefox
+          target_div.mozRequestFullScreen();
+        } else if (target_div.webkitRequestFullscreen) { // Chrome, Safari, Opera
+          target_div.webkitRequestFullscreen();
+        } else if (target_div.msRequestFullscreen) { // IE/Edge
+          target_div.msRequestFullscreen();
+        }
+      }
+    })
   },
   destroyed () {
     this.unsubscribeDB();
