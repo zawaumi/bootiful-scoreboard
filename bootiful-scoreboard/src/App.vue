@@ -1,36 +1,43 @@
 <template>
   <div class="container-fluid">
     <div class="w-100 row m-0">
-      <h1 class="col-md-12 text-center my-2">ランキング</h1>
       <!--最新の記録-->
-      <div class="d-flex flex-column align-items-center col-4 p-5">
-        <div class="w-100 px-3">
-          <div v-for="index in 3" class="w-100">
-            <div v-if="(latestScore[index-1] ?? false)" class="w-100 my-4 border border-1 rounded shadow">
-              <h3>{{ latestScore[index - 1].rank ?? "error" }} 位</h3>
-              <div class="d-flex flex-row justify-content-center"><h5 class="flex-grow-1 flex-basis-0 text-end">{{ latestScore[index - 1].roomId ?? "UNKNOWN" }}</h5><h5 class="px-2">|</h5><h5 class="flex-grow-1 flex-basis-0 text-start">score: {{ latestScore[index - 1].score ?? 0 }}</h5></div>
+      <div class="d-flex flex-column align-items-center col-4">
+        <h1 class="w-100 text-center my-2">最新の記録</h1>
+        <div class="w-100 p-5">
+          <div class="w-100 px-3">
+            <div v-for="index in 3" class="w-100">
+              <div v-if="(latestScore[index-1] ?? false)" class="w-100 my-4 border border-1 rounded shadow">
+                <h3>{{ latestScore[index - 1].rank ?? "error" }} 位</h3>
+                <div class="d-flex flex-row justify-content-center"><h5 class="flex-grow-1 flex-basis-0 text-end">{{ latestScore[index - 1].roomId ?? "UNKNOWN" }}</h5><h5 class="px-2">|</h5><h5 class="flex-grow-1 flex-basis-0 text-start">score: {{ latestScore[index - 1].score ?? 0 }}</h5></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <!--1~9位まで-->
-      <div class="d-flex flex-column align-items-center col-4 p-5">
-        <div class="w-100 px-3">
-          <div v-for="index in 5" class="w-100">
-            <div v-if="(ranking[index-1] ?? false)" class="w-100 my-4 border border-1 rounded shadow">
-              <h3>{{ ranking[index-1].rank ?? "error" }} 位</h3>
-              <div class="d-flex flex-row justify-content-center"><h5 class="flex-grow-1 flex-basis-0 text-end">{{ ranking[index - 1].roomId ?? "UNKNOWN" }}</h5><h5 class="px-2">|</h5><h5 class="flex-grow-1 flex-basis-0 text-start">score: {{ ranking[index - 1].score ?? 0 }}</h5></div>
+      <div class="col-8">
+        <h1 class="w-100 text-center my-2">ランキング</h1>
+        <div class="w-100 row m-0">
+          <!--1~9位まで-->
+          <div class="d-flex flex-column align-items-center col-6 p-5">
+            <div class="w-100 px-3">
+              <div v-for="index in 5" class="w-100">
+                <div v-if="(ranking[index-1] ?? false)" class="w-100 my-4 border border-1 rounded shadow">
+                  <h3>{{ ranking[index-1].rank ?? "error" }} 位</h3>
+                  <div class="d-flex flex-row justify-content-center"><h5 class="flex-grow-1 flex-basis-0 text-end">{{ ranking[index - 1].roomId ?? "UNKNOWN" }}</h5><h5 class="px-2">|</h5><h5 class="flex-grow-1 flex-basis-0 text-start">score: {{ ranking[index - 1].score ?? 0 }}</h5></div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <!--5~10位まで-->
-      <div class="d-flex flex-column align-items-center col-4 p-5">
-        <div class="w-100 px-3">
-          <div v-for="index in 5" class="w-100">
-            <div v-if="(ranking[index + 4] ?? false)" class="w-100 my-4 border border-1 rounded shadow">
-              <h3>{{ ranking[index + 4].rank ?? "error" }} 位</h3>
-              <div class="d-flex flex-row justify-content-center"><h5 class="flex-grow-1 flex-basis-0 text-end">{{ ranking[index + 4].roomId ?? "UNKNOWN" }}</h5><h5 class="px-2">|</h5><h5 class="flex-grow-1 flex-basis-0 text-start">score: {{ ranking[index + 4].score ?? 0 }}</h5></div>
+          <!--5~10位まで-->
+          <div class="d-flex flex-column align-items-center col-6 p-5">
+            <div class="w-100 px-3">
+              <div v-for="index in 5" class="w-100">
+                <div v-if="(ranking[index + 4] ?? false)" class="w-100 my-4 border border-1 rounded shadow">
+                  <h3>{{ ranking[index + 4].rank ?? "error" }} 位</h3>
+                  <div class="d-flex flex-row justify-content-center"><h5 class="flex-grow-1 flex-basis-0 text-end">{{ ranking[index + 4].roomId ?? "UNKNOWN" }}</h5><h5 class="px-2">|</h5><h5 class="flex-grow-1 flex-basis-0 text-start">score: {{ ranking[index + 4].score ?? 0 }}</h5></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
